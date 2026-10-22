@@ -1,0 +1,49 @@
+Metadata-Version: 2.4
+Name: pdf-splitter-cli
+Version: 0.1.0
+Summary: CLI PDF chapter splitter with outline depth and heading detection
+License: MIT
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: pypdf>=5.0.0
+Requires-Dist: pdfplumber>=0.11.0
+
+# Python CLI
+
+This repository now includes a Python-only CLI implementation for splitting PDFs
+without GUI or OCR.
+
+## Install
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+## Usage
+
+Split by content (outline first, heading detection fallback):
+
+```bash
+pdf-splitter input.pdf --mode content --depth 2
+```
+
+Split by equal length:
+
+```bash
+pdf-splitter input.pdf --mode length --parts 6
+```
+
+Choose output folder:
+
+```bash
+pdf-splitter input.pdf --output-dir ./out
+```
+
+## Notes
+
+- `--depth` defaults to `1`.
+- In content mode, embedded outline is used when present.
+- If no outline exists, heading detection based on text layout is used.
+- OCR is intentionally not part of this Python CLI.

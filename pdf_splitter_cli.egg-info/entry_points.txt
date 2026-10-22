@@ -1,0 +1,2 @@
+[console_scripts]
+pdf-splitter = pdf_splitter_py.cli:main

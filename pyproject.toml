@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdf-splitter-cli"
+version = "0.1.0"
+description = "CLI PDF chapter splitter with outline depth and heading detection"
+readme = "docs/python-cli.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+  "pypdf>=5.0.0",
+  "pdfplumber>=0.11.0",
+]
+
+[project.scripts]
+pdf-splitter = "pdf_splitter_py.cli:main"
+
+[tool.setuptools]
+packages = ["pdf_splitter_py"]
