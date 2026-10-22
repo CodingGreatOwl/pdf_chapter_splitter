@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import logging
 import sys
+import time
 
 from .splitter import default_output_dir, extract, plan_sections
 from .types import InvalidPdfError, NoOutlineError
@@ -51,6 +52,7 @@ def main(argv: list[str] | None = None) -> int:
 
     output_dir = args.output_dir or default_output_dir(args.input)
     depth = max(1, args.depth)
+    started_at = time.perf_counter()
 
     try:
         chapters, total_pages, source = plan_sections(
@@ -73,15 +75,24 @@ def main(argv: list[str] | None = None) -> int:
         print(f"unexpected error: {error}", file=sys.stderr)
         return 1
 
-    print(f"Input pages: {total_pages}")
-    print(f"Split mode: {args.mode}")
+    elapsed = time.perf_counter() - started_at
+    speed_pages = total_pages / elapsed if elapsed > 0 else 0.0
+
+    print("=" * 58)
+    print("PDF Splitter - Conversion Summary")
+    print("=" * 58)
+    print(f"{'Input pages':<18}: {total_pages}")
+    print(f"{'Split mode':<18}: {args.mode}")
     if args.mode == "content":
-        print(f"Depth: {depth}")
-        print(f"Structure source: {source}")
+        print(f"{'Depth':<18}: {depth}")
+        print(f"{'Structure source':<18}: {source}")
     else:
-        print(f"Parts: {max(1, args.parts)}")
-    print(f"Written files: {len(written)}")
-    print(f"Output directory: {output_dir}")
+        print(f"{'Parts':<18}: {max(1, args.parts)}")
+    print(f"{'Written files':<18}: {len(written)}")
+    print(f"{'Duration':<18}: {elapsed:.2f}s")
+    print(f"{'Conversion speed':<18}: {speed_pages:.2f} pages/s")
+    print(f"{'Output directory':<18}: {output_dir}")
+    print("=" * 58)
     return 0
 
 
