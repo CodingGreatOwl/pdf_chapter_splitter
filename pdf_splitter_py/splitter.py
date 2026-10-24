@@ -15,6 +15,7 @@ MAX_SUPPORTED_DEPTH = 12
 
 
 def _chapter(title: str, start_page: int, end_page: int, kind: SectionKind) -> Chapter:
+    """Build a chapter record with derived id and section group."""
     return Chapter(
         id=f"{start_page}-{end_page}-{title}",
         title=title,
@@ -26,6 +27,7 @@ def _chapter(title: str, start_page: int, end_page: int, kind: SectionKind) -> C
 
 
 def _with_unique_ids(chapters: list[Chapter]) -> list[Chapter]:
+    """Ensure repeated chapter ids receive a stable numeric suffix."""
     seen: dict[str, int] = defaultdict(int)
     for chapter in chapters:
         count = seen[chapter.id]
@@ -36,6 +38,7 @@ def _with_unique_ids(chapters: list[Chapter]) -> list[Chapter]:
 
 
 def to_chapters(bookmarks: list[Bookmark], total_pages: int) -> list[Chapter]:
+    """Convert ordered bookmarks to non-overlapping chapter page ranges."""
     in_order = sorted(bookmarks, key=lambda b: b.page)
     if len(in_order) == 0 or total_pages < 1:
         return []
@@ -62,6 +65,7 @@ def to_chapters(bookmarks: list[Bookmark], total_pages: int) -> list[Chapter]:
 
 
 def to_equal_parts(total_pages: int, parts: int) -> list[Chapter]:
+    """Split total pages into near-equal sequential chapter ranges."""
     if total_pages < 1:
         return []
 
@@ -81,10 +85,12 @@ def to_equal_parts(total_pages: int, parts: int) -> list[Chapter]:
 
 
 def _is_outline_item(item: Any) -> bool:
+    """Return True when an outline item exposes a title attribute."""
     return hasattr(item, "title")
 
 
 def read_outline(path: str, max_depth: int) -> tuple[list[Bookmark], int]:
+    """Read PDF outline entries up to max_depth and return bookmarks with page count."""
     try:
         reader = PdfReader(path)
     except Exception as error:  # pragma: no cover
@@ -116,6 +122,7 @@ def read_outline(path: str, max_depth: int) -> tuple[list[Bookmark], int]:
 
 
 def inspect_outline(path: str) -> OutlineSummary:
+    """Summarize available outline depth and chapter counts per depth."""
     bookmarks, total_pages = read_outline(path, MAX_SUPPORTED_DEPTH)
     if len(bookmarks) == 0:
         raise NoOutlineError("No table of contents in this PDF")
@@ -129,6 +136,7 @@ def inspect_outline(path: str) -> OutlineSummary:
 
 
 def plan_sections(path: str, mode: str, depth: int = 1, parts: int = 4) -> tuple[list[Chapter], int, str]:
+    """Plan chapter boundaries from equal parts or detected document structure."""
     try:
         reader = PdfReader(path)
         total_pages = len(reader.pages)
@@ -156,6 +164,7 @@ def plan_sections(path: str, mode: str, depth: int = 1, parts: int = 4) -> tuple
 
 
 def extract(path: str, source_name: str, chapters: list[Chapter], numbered: bool, output_dir: str) -> list[Path]:
+    """Write chapter ranges to individual PDF files and return written paths."""
     reader = PdfReader(path)
     total_pages = len(reader.pages)
     file_names = build_file_names(
@@ -183,5 +192,6 @@ def extract(path: str, source_name: str, chapters: list[Chapter], numbered: bool
 
 
 def default_output_dir(input_path: str) -> str:
+    """Return default output folder path beside input PDF using sanitized stem."""
     source = Path(input_path)
     return str(source.parent / base_name_of(source.name))
