@@ -57,6 +57,7 @@ GROUPS: dict[SectionKind, SectionGroup] = {
 
 
 def classify_section(title: str) -> SectionKind:
+    """Classify a section title into a known document section kind."""
     trimmed = title.strip()
     for kind, pattern in PATTERNS:
         if pattern.search(trimmed):
@@ -65,4 +66,5 @@ def classify_section(title: str) -> SectionKind:
 
 
 def group_of(kind: SectionKind) -> SectionGroup:
+    """Map a section kind to its high-level group (front, body, or back)."""
     return GROUPS[kind]
