@@ -51,7 +51,10 @@ def to_chapters(bookmarks: list[Bookmark], total_pages: int) -> list[Chapter]:
     for index, bookmark in enumerate(in_order):
         next_bookmark = next((b for b in in_order[index + 1 :] if b.page > bookmark.page), None)
         start_page = min(max(bookmark.page, 1), total_pages)
-        end_page = min((next_bookmark.page - 1) if next_bookmark else total_pages, total_pages)
+        next_start = (
+            min(max(next_bookmark.page, 1), total_pages) if next_bookmark else total_pages + 1
+        )
+        end_page = min(next_start - 1, total_pages)
         chapters.append(
             _chapter(
                 bookmark.title,
