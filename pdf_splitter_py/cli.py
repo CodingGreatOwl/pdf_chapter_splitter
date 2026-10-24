@@ -10,6 +10,7 @@ from .types import InvalidPdfError, NoOutlineError
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Create and configure the command-line argument parser."""
     parser = argparse.ArgumentParser(
         prog="pdf-splitter",
         description="Split a PDF by outline depth, detected headings, or equal parts.",
@@ -46,6 +47,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Run the CLI flow and return process-compatible status codes."""
     logging.getLogger("pypdf").setLevel(logging.ERROR)
 
     args = build_parser().parse_args(argv)
