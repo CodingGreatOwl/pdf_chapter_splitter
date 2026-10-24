@@ -9,11 +9,13 @@ RESERVED_PUNCTUATION = re.compile(r"[<>:\"/\\|?*]")
 
 
 def index_label(value: int, total: int) -> str:
+    """Return a zero-padded index string sized for the total part count."""
     width = max(2, len(str(max(total, 1))))
     return str(value).rjust(width, "0")
 
 
 def strip_control_characters(value: str) -> str:
+    """Remove ASCII control characters so file labels stay portable."""
     out: list[str] = []
     for ch in value:
         code = ord(ch)
@@ -23,6 +25,7 @@ def strip_control_characters(value: str) -> str:
 
 
 def sanitize_title(title: str) -> str:
+    """Normalize a title into a safe filename segment for cross-platform use."""
     cleaned = strip_control_characters(title)
     cleaned = RESERVED_PUNCTUATION.sub(" ", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
@@ -38,11 +41,13 @@ def sanitize_title(title: str) -> str:
 
 
 def base_name_of(file_name: str) -> str:
+    """Return a sanitized document stem without the trailing .pdf extension."""
     stem = re.sub(r"\.pdf$", "", file_name, flags=re.IGNORECASE)
     return sanitize_title(stem) or "Document"
 
 
 def build_file_names(source: str, parts: list[dict[str, object]]) -> list[str]:
+    """Build unique output filenames for split parts from source and part metadata."""
     stem = base_name_of(source)
     taken: set[str] = set()
     names: list[str] = []
