@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from pdf_splitter_py.sections import classify_section, group_of
+from pdf_chapter_splitter.sections import classify_section, group_of
 
 
 @pytest.mark.case(

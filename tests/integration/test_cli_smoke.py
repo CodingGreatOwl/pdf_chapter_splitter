@@ -13,7 +13,7 @@ MATERIAL = ROOT / "tests" / "testingMaterial"
 
 def _run_cli(args: list[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [sys.executable, "-m", "pdf_splitter_py.cli", *args],
+        [sys.executable, "-m", "pdf_chapter_splitter.cli", *args],
         cwd=ROOT,
         text=True,
         capture_output=True,

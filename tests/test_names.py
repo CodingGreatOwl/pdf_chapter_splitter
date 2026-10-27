@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from pdf_splitter_py.names import (
+from pdf_chapter_splitter.names import (
     MAX_TITLE_LENGTH,
     base_name_of,
     build_file_names,

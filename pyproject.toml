@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pdf-splitter = "pdf_splitter_py.cli:main"
+pdf-splitter = "pdf_chapter_splitter.cli:main"
 
 [tool.setuptools]
-packages = ["pdf_splitter_py"]
+packages = ["pdf_chapter_splitter"]

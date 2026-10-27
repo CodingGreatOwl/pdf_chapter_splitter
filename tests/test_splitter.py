@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-import pdf_splitter_py.splitter as splitter
-from pdf_splitter_py.splitter import default_output_dir, to_chapters, to_equal_parts
-from pdf_splitter_py.types import Bookmark, DetectedHeading, DetectedOutline, InvalidPdfError, NoOutlineError
+import pdf_chapter_splitter.splitter as splitter
+from pdf_chapter_splitter.splitter import default_output_dir, to_chapters, to_equal_parts
+from pdf_chapter_splitter.types import Bookmark, DetectedHeading, DetectedOutline, InvalidPdfError, NoOutlineError
 
 
 @pytest.mark.case(

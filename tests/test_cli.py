@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-import pdf_splitter_py.cli as cli
-from pdf_splitter_py.types import InvalidPdfError, NoOutlineError
+import pdf_chapter_splitter.cli as cli
+from pdf_chapter_splitter.types import InvalidPdfError, NoOutlineError
 
 
 @pytest.mark.case(
