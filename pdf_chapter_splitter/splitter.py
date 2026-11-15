@@ -113,7 +113,7 @@ def read_outline(path: str, max_depth: int) -> tuple[list[Bookmark], int]:
             title = str(getattr(item, "title", "Untitled") or "Untitled").strip() or "Untitled"
             try:
                 page = int(reader.get_destination_page_number(item)) + 1
-            except Exception:
+            except (AttributeError, KeyError, TypeError, ValueError):
                 continue
             out.append(Bookmark(title=title, page=page, level=level))
 
