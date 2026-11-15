@@ -1,3 +1,5 @@
+"""Command-line interface for splitting PDFs by structure or length."""
+
 from __future__ import annotations
 
 import argparse
@@ -7,6 +9,9 @@ import time
 
 from .splitter import default_output_dir, extract, plan_sections
 from .types import InvalidPdfError, NoOutlineError
+
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -74,6 +79,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: {error}", file=sys.stderr)
         return 2
     except Exception as error:  # pragma: no cover
+        logger.error("unexpected error: %s", error)
         print(f"unexpected error: {error}", file=sys.stderr)
         return 1
 
