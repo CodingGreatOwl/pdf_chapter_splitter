@@ -124,20 +124,6 @@ def read_outline(path: str, max_depth: int) -> tuple[list[Bookmark], int]:
     return out, total_pages
 
 
-def inspect_outline(path: str) -> OutlineSummary:
-    """Summarize available outline depth and chapter counts per depth."""
-    bookmarks, total_pages = read_outline(path, MAX_SUPPORTED_DEPTH)
-    if len(bookmarks) == 0:
-        raise NoOutlineError("No table of contents in this PDF")
-
-    max_depth = max([1] + [bookmark.level for bookmark in bookmarks])
-    chapters_at_depth = [
-        len(to_chapters([bookmark for bookmark in bookmarks if bookmark.level <= depth], total_pages))
-        for depth in range(1, max_depth + 1)
-    ]
-    return OutlineSummary(max_depth=max_depth, chapters_at_depth=chapters_at_depth, total_pages=total_pages)
-
-
 def plan_sections(path: str, mode: str, depth: int = 1, parts: int = 4) -> tuple[list[Chapter], int, str]:
     """Plan chapter boundaries from equal parts or detected document structure."""
     try:
